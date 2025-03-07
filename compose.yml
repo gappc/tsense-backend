@@ -1,0 +1,13 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      target: build
+    image: gappc/tsense-backend:latest
+    volumes:
+      - ./db:/app/db
+    working_dir: /app
+    restart: unless-stopped
+    expose:
+      - 3000
