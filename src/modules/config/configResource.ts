@@ -1,5 +1,5 @@
 import Router from "koa-router";
-import { getConfig } from "./configPersistence";
+import { getConfigForName } from "./configPersistence";
 
 // Initialize Koa router
 export const router = new Router();
@@ -8,7 +8,7 @@ export const router = new Router();
 router.get("/config/:id", async (ctx) => {
   const id = ctx.params.id;
   try {
-    const data = await getConfig(id);
+    const data = await getConfigForName(id);
     ctx.body = data;
   } catch (err) {
     console.error(err);

@@ -18,14 +18,16 @@ const createTable = () => {
     }
   });
 };
-export const getConfig = async (name: string): Promise<string | null> => {
+export const getConfigForName = async (
+  name: string
+): Promise<string | null> => {
   return new Promise<string | null>((resolve, reject) => {
     const query = "SELECT value FROM config WHERE name = ?";
     db.get<{ value: string }>(query, [name], (err, row) => {
       if (err) {
         reject(err);
       } else {
-        resolve(row.value);
+        resolve(row?.value ?? null);
       }
     });
   });
