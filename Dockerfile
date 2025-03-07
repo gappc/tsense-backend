@@ -8,10 +8,10 @@ RUN mkdir -p /app && chown -R node:node /app
 WORKDIR /app
 
 COPY package*.json ./
+RUN npm ci
+
 COPY tsconfig.json ./
 COPY src/ ./src/
-
-RUN npm ci
 RUN npm run build
 
 # Production image
