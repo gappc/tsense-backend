@@ -6,7 +6,7 @@ This is the tsense backend. It is a simple REST API that stores and retrieves se
 
 ```bash
 # Read config
-curl http://localhost:3000/config -H "Content-Type: application/json"
+curl http://localhost:3000/config/sensors -H "Content-Type: application/json"
 
 # Read measurement
 curl http://localhost:3000/sensors -H "Content-Type: application/json"
