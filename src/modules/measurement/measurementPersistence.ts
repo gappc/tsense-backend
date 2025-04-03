@@ -68,8 +68,6 @@ export const getAllMeasurements = (
   selectQuery += " OFFSET ?";
   queryParamsArray.push(offset);
 
-  console.log("SQL Query:", selectQuery);
-
   return new Promise<MeasurementInsertResponse[]>((resolve, reject) => {
     const measurements: MeasurementInsertResponse[] = [];
 
