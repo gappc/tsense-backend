@@ -4,12 +4,14 @@ import {
   MeasurementDataResponse,
   MeasurementDataResponseSchema,
 } from "./measurementSchema";
-import { db } from "../../persistence/db";
+import { createTable, db } from "../../persistence/db";
+
+const tableName = "measurement";
 
 // Create the table if it doesn't exist
-const createTable = () => {
+const initPersistence = () => {
   const createTableQuery = `
-    CREATE TABLE IF NOT EXISTS measurement (
+    CREATE TABLE IF NOT EXISTS ${tableName} (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         mac TEXT NOT NULL,
         timestamp TEXT NOT NULL,
@@ -18,13 +20,7 @@ const createTable = () => {
     );
   `;
 
-  db.run(createTableQuery, (err) => {
-    if (err) {
-      console.error("Error creating table", err.message);
-    } else {
-      console.log("Table created or already exists.");
-    }
-  });
+  createTable(tableName, createTableQuery);
 };
 
 // Get all measurements from the database and validate the response using Zod
@@ -65,7 +61,7 @@ export const insertMeasurementData = async (data: unknown) => {
 
   return new Promise<number>((resolve, reject) => {
     const query = `
-      INSERT INTO measurement (mac, timestamp, temperature, humidity) 
+      INSERT INTO ${tableName} (mac, timestamp, temperature, humidity) 
       VALUES (?, ?, ?, ?)
     `;
     db.run(
@@ -83,4 +79,4 @@ export const insertMeasurementData = async (data: unknown) => {
 };
 
 // Initialize the database and create the table
-createTable();
+initPersistence();
