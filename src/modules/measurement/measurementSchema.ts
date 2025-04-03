@@ -6,8 +6,8 @@ const temperatureMax = 100;
 const humidityMin = 0;
 const humidityMax = 100;
 
-// Define the schema for sensor data that will be inserted into the database
-export const SensorDataInsertSchema = z.object({
+// Define the schema for measurements that will be inserted into the database
+export const MeasurementDataInsertSchema = z.object({
   mac: z.string().regex(bluetoothMacAddressRegex, {
     message: "Invalid Bluetooth MAC address format",
   }),
@@ -23,10 +23,14 @@ export const SensorDataInsertSchema = z.object({
 });
 
 // Define the schema for the response that will be sent back to the client
-export const SensorDataResponseSchema = SensorDataInsertSchema.extend({
-  id: z.number(),
-  timestamp: z.string().datetime(),
-});
+export const MeasurementDataResponseSchema = MeasurementDataInsertSchema.extend(
+  {
+    id: z.number(),
+    timestamp: z.string().datetime(),
+  }
+);
 
-export type SensorDataInsert = z.infer<typeof SensorDataInsertSchema>;
-export type SensorDataResponse = z.infer<typeof SensorDataResponseSchema>;
+export type MeasurementDataInsert = z.infer<typeof MeasurementDataInsertSchema>;
+export type MeasurementDataResponse = z.infer<
+  typeof MeasurementDataResponseSchema
+>;

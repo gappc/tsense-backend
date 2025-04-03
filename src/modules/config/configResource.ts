@@ -4,7 +4,7 @@ import { getConfigForName } from "./configPersistence";
 // Initialize Koa router
 export const router = new Router();
 
-// Route to get all sensor data
+// Route to get specific configuration by ID
 router.get("/config/:id", async (ctx) => {
   const id = ctx.params.id;
   try {
