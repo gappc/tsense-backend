@@ -1,20 +1,17 @@
 import Router from "koa-router";
+import { z } from "zod";
 import {
   getAllMeasurements,
   insertMeasurementData,
 } from "./measurementPersistence";
-import { z } from "zod";
 
 // Initialize Koa router
 export const router = new Router();
 
 // Route to get all measurements
 router.get("/measurements", async (ctx) => {
-  // Destructure query parameters
-  const { start, end, macAddress } = ctx.query;
-
   try {
-    const data = await getAllMeasurements();
+    const data = await getAllMeasurements(ctx.query);
     const measurements = data.map(({ id, ...rest }) => rest);
     ctx.body = { measurements };
   } catch (err) {
