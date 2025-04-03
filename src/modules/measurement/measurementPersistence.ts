@@ -1,6 +1,8 @@
+import sqlite3 from "sqlite3";
 import { createTable, db } from "../../persistence/db";
 import {
   MeasurementInsertResponse,
+  MeasurementInsertSchema,
   MeasurementQuerySchema,
   MeasurementResponseSchema,
 } from "./measurementSchema";
@@ -94,7 +96,31 @@ export const getAllMeasurements = (
 };
 
 // Insert measurement data into the database
-export const insertMeasurementData = async (data: unknown) => {};
+export const insertMeasurementData = async (data: unknown) => {
+  // Validate the incoming data using Zod and throw an error if it doesn't match the schema
+  const result = MeasurementInsertSchema.parse(data);
+
+  const { mac, t, h } = result;
+  const timestamp = new Date().toISOString();
+
+  return new Promise<number>((resolve, reject) => {
+    const query = `
+      INSERT INTO ${tableName} (mac, timestamp, temperature, humidity) 
+      VALUES (?, ?, ?, ?)
+    `;
+    db.run(
+      query,
+      [mac.toUpperCase(), timestamp, t, h],
+      function (this: sqlite3.RunResult, err) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(this.lastID);
+        }
+      }
+    );
+  });
+};
 
 // Initialize the database and create the table
 initPersistence();
