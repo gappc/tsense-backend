@@ -8,7 +8,10 @@ import cors from "@koa/cors";
 const app = new Koa();
 
 // Middleware to handle CORS
-app.use(cors());
+const corsOptions: cors.Options = {
+  credentials: true,
+};
+app.use(cors(corsOptions));
 
 // Add body parser
 app.use(bodyParser());
