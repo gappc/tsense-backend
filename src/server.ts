@@ -2,9 +2,13 @@ import { bodyParser } from "@koa/bodyparser";
 import Koa from "koa";
 import { router as configRouter } from "./modules/config/configResource";
 import { router as measurementRouter } from "./modules/measurement/measurementResource";
+import cors from "@koa/cors";
 
 // Initialize Koa app
 const app = new Koa();
+
+// Middleware to handle CORS
+app.use(cors());
 
 // Add body parser
 app.use(bodyParser());
